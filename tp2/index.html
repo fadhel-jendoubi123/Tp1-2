@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>To-Do List complète</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f8f9fa;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    input, button {
+      padding: 8px;
+      margin: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      cursor: pointer;
+      background: #007bff;
+      color: white;
+      border: none;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      padding: 10px;
+      margin: 8px 0;
+      background: #fff;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
+    }
+
+    .actions button {
+      margin-left: 5px;
+      background: #6c757d;
+    }
+
+    .actions button:hover {
+      background: #5a6268;
+    }
+
+    #clearBtn {
+      background: #dc3545;
+    }
+
+    #clearBtn:hover {
+      background: #a71d2a;
+    }
+  </style>
+</head>
+<body>
+  <h1>📝 Ma To-Do List</h1>
+
+  <input type="text" id="taskInput" placeholder="Ajouter une tâche...">
+  <button id="addBtn">Ajouter</button>
+  <button id="clearBtn" onclick="viderListe()">Vider la liste</button>
+
+  <ul id="taskList"></ul>
+
+  <script src="todo.js"></script>
+</body>
+</html>
