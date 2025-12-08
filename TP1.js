@@ -36,7 +36,7 @@ B=[4 , 5 ,6];
 C=[...A,...B];
 
 console.log(C);
-const user1 = { name: "Noor", age: 10, city: "Tunis" };
+const user1 = { name: "noor", age: 10, city: "Tunis" };
 
 const copyUser1 = { ...user };
 
@@ -50,7 +50,7 @@ const livre={
     titre:"Book",
     auteur:"Charles",
     Année : "2025",
-     // Méthode qui retourne une phrase descriptive
+     // méthode qui retourne une phrase descriptive
   getInfo() {
     return `${this.titre}, écrit par ${this.auteur} en ${this.annee}.`;
   }
@@ -60,7 +60,7 @@ const livre={
 console.log(livre.getInfo());
 
 // exercice 6
-// Exercice 6 : Classe ES6
+
 class Etudiant {
   constructor(nom, note) {
     this.nom = nom;
