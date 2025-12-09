@@ -1,4 +1,4 @@
-// Classe abstraite Course
+
 abstract class Course {
   protected title: string;
 
@@ -49,3 +49,4 @@ class LiveCourse extends Course {
 }
 
 export { Course, VideoCourse, LiveCourse };
+
