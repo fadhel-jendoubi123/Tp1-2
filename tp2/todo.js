@@ -1,96 +1,140 @@
-console.log("Bienvenue dans la To-Do List complète !");
+        let taches = [];
+        console.log("Bienvenue dans l'application de gestion de tâches !");
 
-let taches = []; 
-const input = document.getElementById("taskInput");
-const addBtn = document.getElementById("addBtn");
-const taskList = document.getElementById("taskList");
+        const taskInput = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const taskList = document.getElementById('taskList');
+        const searchInput = document.getElementById('searchInput');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const totalCount = document.getElementById('totalCount');
+        const activeCount = document.getElementById('activeCount');
+        const completedCount = document.getElementById('completedCount');
 
-function ajouterTache() {
-  const texte = input.value.trim();
-  if (texte === "") return;
+        function ajouterTache() {
+            const texte = taskInput.value.trim();
+            
+            if (texte === '') {
+                alert('Veuillez entrer une tâche !');
+                return;
+            }
 
-  const tache = {
-    id: Date.now(),       
-    texte: texte,
-    terminee: false
-  };
+            const nouvelleTache = {
+                id: Date.now(),
+                texte: texte,
+                terminee: false
+            };
 
-  taches.push(tache);
+            taches.push(nouvelleTache);
+            taskInput.value = '';
+            
+            sauvegarderTaches();
+            afficherTaches();
+        }
 
-  sauvegarderTaches();
+        function supprimerTache(id) {
+            taches = taches.filter(tache => tache.id !== id);
+            sauvegarderTaches();
+            afficherTaches();
+        }
 
-  afficherTaches();
+        function terminerTache(id) {
+            const tache = taches.find(t => t.id === id);
+            if (tache) {
+                tache.terminee = !tache.terminee;
+                sauvegarderTaches();
+                afficherTaches();
+            }
+        }
 
-  input.value = "";
-}
+        function afficherTaches(filtreRecherche = '') {
+            taskList.innerHTML = '';
 
-function supprimerTache(id) {
-  taches = taches.filter(t => t.id !== id);
-  sauvegarderTaches();
-  afficherTaches();
-}
+            const tachesFiltrees = taches.filter(tache => 
+                tache.texte.toLowerCase().includes(filtreRecherche.toLowerCase())
+            );
 
-function terminerTache(id) {
-  const tache = taches.find(t => t.id === id);
-  if (tache) {
-    tache.terminee = !tache.terminee;
-    sauvegarderTaches();
-    afficherTaches();
-  }
-}
+            if (tachesFiltrees.length === 0) {
+                taskList.innerHTML = '<div class="empty-message">Aucune tâche à afficher</div>';
+            } else {
+                tachesFiltrees.forEach(tache => {
+                    const li = document.createElement('li');
+                    li.className = 'task-item';
 
-function afficherTaches() {
-  taskList.innerHTML = "";
+                    const span = document.createElement('span');
+                    span.className = 'task-text';
+                    if (tache.terminee) {
+                        span.classList.add('completed');
+                    }
+                    span.textContent = tache.texte;
 
-  taches.forEach(tache => {
-    const li = document.createElement("li");
+                    const completeBtn = document.createElement('button');
+                    completeBtn.className = 'task-btn complete-btn';
+                    completeBtn.textContent = tache.terminee ? '↩️' : '✓';
+                    completeBtn.onclick = () => terminerTache(tache.id);
 
-    const span = document.createElement("span");
-    span.textContent = tache.texte;
-    if (tache.terminee) span.classList.add("completed");
-    li.appendChild(span);
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'task-btn delete-btn';
+                    deleteBtn.textContent = '✕';
+                    deleteBtn.onclick = () => supprimerTache(tache.id);
 
-    const actions = document.createElement("div");
-    actions.className = "actions";
+                    li.appendChild(span);
+                    li.appendChild(completeBtn);
+                    li.appendChild(deleteBtn);
+                    taskList.appendChild(li);
+                });
+            }
 
+            mettreAJourStats();
+        }
 
-    const terminerBtn = document.createElement("button");
-    terminerBtn.textContent = "✔";
-    terminerBtn.onclick = () => terminerTache(tache.id);
-    actions.appendChild(terminerBtn);
-    const supprimerBtn = document.createElement("button");
-    supprimerBtn.textContent = "🗑";
-    supprimerBtn.onclick = () => supprimerTache(tache.id);
-    actions.appendChild(supprimerBtn);
+        function mettreAJourStats() {
+            const total = taches.length;
+            const terminees = taches.filter(t => t.terminee).length;
+            const enCours = total - terminees;
 
-    li.appendChild(actions);
-    taskList.appendChild(li);
-  });
-}
+            totalCount.textContent = total;
+            activeCount.textContent = enCours;
+            completedCount.textContent = terminees;
+        }
 
-function sauvegarderTaches() {
-  localStorage.setItem("taches", JSON.stringify(taches));
-}
+        function sauvegarderTaches() {
+            const tachesJSON = JSON.stringify(taches);
+            localStorage.setItem('taches', tachesJSON);
+        }
 
-function chargerTaches() {
-  const data = localStorage.getItem("taches");
-  if (data) {
-    taches = JSON.parse(data);
-    afficherTaches();
-  }
-}
+        function chargerTaches() {
+            const tachesJSON = localStorage.getItem('taches');
+            if (tachesJSON) {
+                taches = JSON.parse(tachesJSON);
+                afficherTaches();
+            }
+        }
 
-addBtn.addEventListener("click", ajouterTache);
-input.addEventListener("keypress", (e) => {
-  if (e.key === "Enter") {
-    ajouterTache();
-  }
-});
+        function toutSupprimer() {
+            if (taches.length === 0) {
+                alert('Aucune tâche à supprimer !');
+                return;
+            }
 
-chargerTaches();
+            if (confirm('Voulez-vous vraiment supprimer toutes les tâches ?')) {
+                taches = [];
+                sauvegarderTaches();
+                afficherTaches();
+            }
+        }
 
-function viderListe() {
-  taches = [];
-  sauvegarderTaches();
-  afficherTaches();
-}
+        addBtn.addEventListener('click', ajouterTache);
+
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                ajouterTache();
+            }
+        });
+
+        searchInput.addEventListener('input', (e) => {
+            afficherTaches(e.target.value);
+        });
+
+        clearAllBtn.addEventListener('click', toutSupprimer);
+
+        chargerTaches();
