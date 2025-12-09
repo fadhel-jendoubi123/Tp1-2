@@ -11,6 +11,7 @@
 console.log(x);
 console.log(y);
 console.log(pi);
+// les accolades de porté ne donne pas accés a x , y  et pi au console.log
 // si on affecte a une constante on recevoit cet erreur  : Assignment to constant variable
 
 /*exercice 2 */
@@ -19,7 +20,7 @@ const sommeFleche=(a,b) => a+b;
 //fonction somme en syntaxe return explicite
 
 function sommeClassique(a,b){
-    return(number(a)+number(b));
+    return(Number(a)+Number(b));
 }
 // exercice 3 
 var x, y ;
@@ -38,18 +39,18 @@ C=[...A,...B];
 console.log(C);
 const user1 = { name: "noor", age: 10, city: "Tunis" };
 
-const copyUser1 = { ...user };
+const copyUser1 = { ...user1 };
 
-copyUser.age = 15;
+copyUser1.age = 15;
 
-console.log("Objet original:", user);      
-console.log("Copie modifiée:", copyUser);   
+console.log("Objet original:", user1);      
+console.log("Copie modifiée:", copyUser1);   
 
 // exercice 5
 const livre={
     titre:"Book",
     auteur:"Charles",
-    Année : "2025",
+    annee : "2025",
      // méthode qui retourne une phrase descriptive
   getInfo() {
     return `${this.titre}, écrit par ${this.auteur} en ${this.annee}.`;
@@ -80,9 +81,8 @@ const etudiants = [
 ];
 
 etudiants.forEach(et => {
-  console.log(`${et.nom} : ${et.getMention()}`);
-});
-
+console.log`${et.nom} : ${et.getMention()}`);  
+}
 // exercice 7
 const notes = [12, 5, 17, 9, 20];
 
